@@ -13,6 +13,7 @@ import java.util.Arrays;
 public class PumpkinPix {
 
     public static void main(String[] args) {
+        BufferedImage image = ImageIO.read(new File(path));
         // TODO: Configure commandline arguments to read in file names
         // Create a launch.json file & add "pumpkin.png" to the args
         // You can add your own images, too (no need to upload them)!

@@ -24,12 +24,12 @@ public class OrangeHueFilter {
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                // TODO: retrieve the RGB array for the current pixel
-    
+                int[] pixel = pixelArray[y][x]; //retrieves RGB array for current pixel
+                
 
-                float redNormalized = adjustContrast(/* TODO access red pixel */ / 255f, contrast);
-                float greenNormalized = adjustContrast(/* TODO access red pixel */ / 255f, contrast);
-                float blueNormalized = adjustContrast(/* TODO access red pixel */ / 255f, contrast);
+                float redNormalized = adjustContrast(pixelArray[y][x][0] / 255f, contrast);
+                float greenNormalized = adjustContrast(pixelArray[y][x][1] / 255f, contrast);
+                float blueNormalized = adjustContrast(pixelArray[y][x][2] / 255f, contrast);
 
                 int red = clamp(Math.round(redNormalized * 255 + brightnessBoost));
                 int green = clamp(Math.round(greenNormalized * 255 + brightnessBoost));
@@ -40,8 +40,9 @@ public class OrangeHueFilter {
                 green = blendColor(green, 140, blend);
                 blue = blendColor(blue, 0, blend);
 
-                // TODO: write the new RGB values back to the pixel array
-            
+                pixelArray[y][x][0] = red;
+                pixelArray[y][x][1] = green;
+                pixelArray[y][x][2] = blue; // writes new RGB values back into pixel array
             }
         }
     }

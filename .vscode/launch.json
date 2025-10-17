@@ -1,2 +1,12 @@
-{"args": ["pumpkin.png"]
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "PumpkinPix",
+            "request": "launch",
+            "mainClass": "PumpkinPix",
+            "projectName": "0401-lab07-template_4b331e04",
+            "args": ["pumpkin.png"]
+        }
+    ]
 }

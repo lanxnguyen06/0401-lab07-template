@@ -13,15 +13,20 @@ import java.util.Arrays;
 public class PumpkinPix {
 
     public static void main(String[] args) {
-        BufferedImage image = ImageIO.read(new File(path));
-        // TODO: Configure commandline arguments to read in file names
-        // Create a launch.json file & add "pumpkin.png" to the args
-        // You can add your own images, too (no need to upload them)!
-        // Reminder: Ensure proper error handling!
-
-        for (String inputPath : args) {
-            processImage(inputPath);
+        if (args.length == 0){
+            System.out.println("No image file provided.");
+            return; // if no image exit the program
         }
+
+        String filename = args[0]; // gets the image from command line
+    
+        File file = new File(filename);
+        if (!file.exists()) {
+            System.out.println("Error: File '" + filename + "' not found!");
+            return;
+        }
+        System.out.println("Loading image: " + filename);
+        processImage(filename);
     }
 
     private static void processImage(String path) {
@@ -29,38 +34,24 @@ public class PumpkinPix {
         try {
             System.out.println(path);
 
-            // First, we need to load the image
-            BufferedImage originalImage = ImageIO.read(new File(path));
+            BufferedImage originalImage = ImageIO.read(new File(path)); // loads the image
             System.out.println("Image loaded successfully.");
 
-            // TODO Task 1a: Convert image to 3D array
-            // Make use of ImageProcessor.imageToArray
-            // pixelArray = ... ;
+            int [][][] pixelArray = ImageProcessor.imageToArray(originalImage); // convert image into 3d array
 
-            // TODO 1b: Change the sky color from white to a new color
-            // Define a newSkyColor
+            int [] newSkyColor = {45, 53, 122};
+            ImageProcessor.changeSkyColor(pixelArray, newSkyColor);
+            System.out.println("Sky color changed: " + Arrays.toString(newSkyColor));
 
-            // TODO 1b: Uncomment
-            // ImageProcessor.changeSkyColor(pixelArray, newSkyColor);
-            // System.out.println("Sky color changed: " + Arrays.toString(newSkyColor));
+            FallEffect.recolorTrees(pixelArray, 25); // recolors trees
+            
+            OrangeHueFilter.applyOrangeHue(pixelArray, 40); // adds orange hue
 
-            // TODO 2: Add effects
-            // Add orange hue
+            FallLeavesEffect.addLeaves(pixelArray, 100); // adds leaves
 
-            // TODO 2: Recolor trees
-            // Use FallEffect!
+            BufferedImage modifiedImage = ImageProcessor.arrayToImage(pixelArray); // convert array back to image
 
-            // TODO 2: apply orange filter
-            // Use OrangeHueFilter
-
-            // TODO 2: Add leaves
-            // Use FallLeavesEffect to add leaves
-
-            // Convert back to image
-            BufferedImage modifiedImage = ImageProcessor.arrayToImage(pixelArray);
-
-            // Save the modified image
-            String outputPath = ImageSaver.saveImage(modifiedImage, path);
+            String outputPath = ImageSaver.saveImage(modifiedImage, path); // saves modified image
             System.out.println("Modified image saved as: " + outputPath);
 
         } catch (IOException e) {

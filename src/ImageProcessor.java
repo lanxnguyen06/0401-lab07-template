@@ -14,25 +14,26 @@ public class ImageProcessor {
      * 
      * @param image BufferedImage to convert.
      * @return 3D array of pixels [height][width][RGB].
+     *
      */
-    public static /* TODO needs return type */ void imageToArray(BufferedImage image) {
+
+    public static int[][][] pixelArray;
+
+    public static int[][][] imageToArray(BufferedImage image) { // make return type [][][] to store height width & rgb
         int width = image.getWidth();
         int height = image.getHeight();
 
-        // The image dimensions should represent the following: height x width x RGB
-        // TODO: Decide on an appropriate data type
-        // TODO: pixelArray = new ...;
+        pixelArray = new int[height][width][3]; // 3 values for r, g, b
 
-        // TODO: Iterate through the array and retrieve the individual RGB values
-        // To access the individual RGB values, you can use the following:
-        // x and y represent the image coordinates (regarding height, width)
-        // Color color = new Color(image.getRGB(x, y));
-        // color.getRed();
-        // color.getGreen();
-        // color.getBlue();
-
-        // TODO: Return the array
-        return;
+        for (int h = 0; h < height; h++){
+            for (int r = 0; r < width; r++){
+                Color color = new Color(image.getRGB(r, h));
+                pixelArray[h][r][0] = color.getRed(); // 1st value of red starts at index 0 
+                pixelArray[h][r][1] = color.getGreen();
+                pixelArray[h][r][2] = color.getBlue();
+            }
+        }
+        return pixelArray;
     }
 
     /**
@@ -64,17 +65,17 @@ public class ImageProcessor {
      * @param pixelArray The 3D array of pixel data
      * @param newColor   The new RGB color values
      */
-    // TODO: Change the sky color from blue to a given color
-    public static void changeskyColor(/* TODO type pixelArray, */ int[] newColor) {
-        int height = 0; // TODO height of the pixelArray
-        int width = 0; // TODO width of the pixelArray
+    public static void changeSkyColor(int[][][] pixelArray, int[] newColor) {
+        int height = pixelArray.length;
+        int width = pixelArray[0].length;
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                // TODO: If the current pixel is white, change the color (RGB)
-                // if (isWhite(pixelArray[y][x])) {
-                // ...
-                // }
+                if (isWhite(pixelArray[y][x])){ // if it's true that given color is white
+                    pixelArray[y][x][0] = newColor[0]; // changes R
+                    pixelArray[y][x][1] = newColor[1]; // changes G
+                    pixelArray[y][x][2] = newColor[2]; // changes B
+                }
             }
         }
     }
@@ -86,9 +87,13 @@ public class ImageProcessor {
      * @return True if the color is green, otherwise false
      */
     private static boolean isWhite(int[] color) {
-        // TODO: check if the given pixel is white
-        // You need to check all three color channels
-        // -> white = rgb(255, 255, 255)
+        int red = color[0];
+        int green = color[1];
+        int blue = color[2];
+        if (red == 255 && green == 255 && blue == 255){ // set all to 255 to check if color is white
+            return true;
+        }
+        else
         return false;
     }
 }
